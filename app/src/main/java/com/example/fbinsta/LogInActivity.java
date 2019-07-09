@@ -13,29 +13,37 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
 
     private EditText userNameInput;
     private EditText passwordInput;
     private Button loginBtn;
+    private Button SignUpBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         userNameInput = findViewById(R.id.userName_et);
         passwordInput = findViewById(R.id.password_et);
         loginBtn = findViewById(R.id.login_btn);
+        SignUpBtn = findViewById(R.id.btSignUp);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String username = userNameInput.getText().toString();
                 final String password = passwordInput.getText().toString();
+                login(username, password);
+            }
+        });
 
-                login(username,password);
+          SignUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signUp();
             }
 
         });
@@ -48,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e == null) {
                     Log.d("LoginActivity", "Login successful");
-                    final Intent intent = new Intent (MainActivity.this, HomeActivity.class);
+                    final Intent intent = new Intent (LogInActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -57,5 +65,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void signUp() {
+
+        final Intent intent = new Intent(LogInActivity.this, SignUpActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
