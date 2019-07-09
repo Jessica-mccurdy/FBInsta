@@ -24,29 +24,41 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        userNameInput = findViewById(R.id.userName_et);
-        passwordInput = findViewById(R.id.password_et);
-        loginBtn = findViewById(R.id.signup_btn);
-        SignUpBtn = findViewById(R.id.btSignUp);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // do stuff with the user
+            final Intent intent = new Intent (LogInActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String username = userNameInput.getText().toString();
-                final String password = passwordInput.getText().toString();
-                login(username, password);
-            }
-        });
+        } else {
+            // show the signup or login screen
 
-          SignUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signUp();
-            }
+            setContentView(R.layout.activity_login);
 
-        });
+            userNameInput = findViewById(R.id.userName_et);
+            passwordInput = findViewById(R.id.password_et);
+            loginBtn = findViewById(R.id.signup_btn);
+            SignUpBtn = findViewById(R.id.btSignUp);
+
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final String username = userNameInput.getText().toString();
+                    final String password = passwordInput.getText().toString();
+                    login(username, password);
+                }
+            });
+
+            SignUpBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signUp();
+                }
+
+            });
+        }
 
     }
 
