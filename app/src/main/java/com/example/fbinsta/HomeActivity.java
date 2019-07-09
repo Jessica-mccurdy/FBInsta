@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     private EditText descriptionInput;
     private Button takePicButton;
     private Button submitButton;
+    private Button logInButton;
     private ImageView ivPostImage;
 
     // copied and looks wrong
@@ -52,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         takePicButton = findViewById(R.id.takePic_bt);
         submitButton = findViewById(R.id.submit_bt);
         ivPostImage = findViewById(R.id.ivPostImage);
+        logInButton = findViewById(R.id.logOut);
 
         // queryPosts();
 
@@ -61,6 +63,19 @@ public class HomeActivity extends AppCompatActivity {
                 launchCamera();
             }
         });
+
+
+        logInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                final Intent intent = new Intent(HomeActivity.this, LogInActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+            });
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +90,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 savePost(description, user, photoFile);
             }
+
             //queryPosts();
 
 
