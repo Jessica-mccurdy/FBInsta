@@ -1,13 +1,20 @@
-package com.example.fbinsta;
+package com.example.fbinsta.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.fbinsta.FeedAdapter;
+import com.example.fbinsta.R;
 import com.example.fbinsta.model.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -16,7 +23,7 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedActivity extends AppCompatActivity {
+public class PostsFragment extends Fragment {
 
     FeedAdapter feedAdapter;
     ArrayList<Post> posts;
@@ -24,15 +31,22 @@ public class FeedActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
 
 
+    //
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_posts, container, false);
 
-        super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_feed);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
 
         //find the RecyclerView
-        rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
+        rvFeed = (RecyclerView) view.findViewById(R.id.rvFeed);
 
         // initialize the array list (datasource
         posts = new ArrayList<>();
@@ -41,7 +55,7 @@ public class FeedActivity extends AppCompatActivity {
 
         //RecyclerView setup (layout manager, use adapter)
 
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         //linearLayoutManager.setReverseLayout(true);
         rvFeed.setLayoutManager(linearLayoutManager);
         rvFeed.setAdapter(feedAdapter);
@@ -49,11 +63,11 @@ public class FeedActivity extends AppCompatActivity {
 
         // Adds lines between posts
         //rvFeed.addItemDecoration(new DividerItemDecoration(this,
-                //DividerItemDecoration.VERTICAL));
+        //DividerItemDecoration.VERTICAL));
 
 
         // Lookup the swipe container view
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -105,8 +119,8 @@ public class FeedActivity extends AppCompatActivity {
     protected void populate(){
         //get query
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
-            postQuery.include(Post.KEY_USER);
-            postQuery.findInBackground(new FindCallback<Post>() {
+        postQuery.include(Post.KEY_USER);
+        postQuery.findInBackground(new FindCallback<Post>() {
             //iterate through query
             @Override
             public void done(List<Post> objects, ParseException e) {
@@ -123,7 +137,8 @@ public class FeedActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-    });}
+        });}
 
 
 }
+

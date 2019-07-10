@@ -1,6 +1,7 @@
 package com.example.fbinsta;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +111,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         @Override
         public void onClick(View v) {
 
-            /*
+
             // gets item position
             int position = getAdapterPosition();
             // make sure the position is valid, i.e. actually exists in the view
@@ -120,11 +121,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 // create intent for the new activity
                 Intent intent = new Intent(context, DetailsActivity.class);
                 // serialize the tweet using parceler, use its short name as a key
-                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+               // intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+                //intent.putExtra( "id" , post.getObjectID());
                 // show the activity
                 context.startActivity(intent);
             }
-           */
+
 
         }
 

@@ -38,6 +38,10 @@
             android:label="@string/title_activity_feed"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_signUp"
             android:theme="@style/AppTheme.NoActionBar"></activity>

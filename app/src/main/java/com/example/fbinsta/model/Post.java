@@ -12,6 +12,8 @@ public class Post extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
+   // public static final String KEY_ID = "objectId";
+   // public static final String KEY_CREATED  = "createdAt";
 
     public String getDescription(){
         return getString(KEY_DESCRIPTION);
@@ -36,6 +38,18 @@ public class Post extends ParseObject {
         put(KEY_USER, user);
     }
 
+    /*
+    public String getObjectID(){
+        return (String) getString(KEY_ID);
+    }
+
+    public String getKeyCreated(){
+        return (String) KEY_CREATED;
+    }
+    */
+
+    // for parceler
+    public Post(){}
 
 
     public static class Query extends ParseQuery<Post> {
