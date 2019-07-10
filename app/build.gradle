@@ -26,7 +26,12 @@ dependencies {
     implementation 'com.parse.bolts:bolts-android:1.4.0'
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.18.5'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    implementation 'com.android.support:support-v4:26.1.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'jp.wasabeef:glide-transformations:3.3.0'
+    // Android Async Http for sending async network requests
     // for logging API calls to LogCat
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

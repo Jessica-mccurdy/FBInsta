@@ -18,15 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.example.fbinsta.model.Post;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button takePicButton;
     private Button submitButton;
     private Button logInButton;
+    private Button feedButton;
     private ImageView ivPostImage;
 
     // copied and looks wrong
@@ -54,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.submit_bt);
         ivPostImage = findViewById(R.id.ivPostImage);
         logInButton = findViewById(R.id.logOut);
+        feedButton = findViewById(R.id.btFeed);
 
         // queryPosts();
 
@@ -76,6 +75,16 @@ public class HomeActivity extends AppCompatActivity {
 
             }
             });
+
+        feedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(HomeActivity.this, FeedActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -173,26 +182,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
-        private void queryPosts(){
-            ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
-            postQuery.include(Post.KEY_USER);
-            postQuery.findInBackground(new FindCallback<Post>() {
-                @Override
-                public void done(List<Post> objects, ParseException e) {
-                    if (e == null){
-                        for (int i = 0; i < objects.size(); ++i){
-                            // from old vid
-                            Log.d(TAG, "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
-
-                        }
-                    }else {
-                        Log.e("HomeActivity", "Can't get post");
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
 
 
 
