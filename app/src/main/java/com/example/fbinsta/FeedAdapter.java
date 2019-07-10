@@ -46,7 +46,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         Post post = posts.get(position);
 
         //populate the views according to this data
-        //TODO these are all pulled from query - query format
         holder.tvUserName.setText(post.getUser().getUsername());
         holder.tvUserName2.setText(post.getUser().getUsername());
         holder.tvDescription.setText(post.getDescription());
