@@ -48,7 +48,7 @@ public class FeedActivity extends AppCompatActivity {
         //rvFeed.addItemDecoration(new DividerItemDecoration(this,
                 //DividerItemDecoration.VERTICAL));
 
-        /*
+
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
@@ -57,6 +57,7 @@ public class FeedActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 feedAdapter.clear();
+                feedAdapter.addAll(posts);
                 populate();
                 swipeContainer.setRefreshing(false);
             }
@@ -70,11 +71,13 @@ public class FeedActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        */
+
 
         populate();
 
     }
+
+
 
     private void queryPosts(){
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
@@ -118,5 +121,7 @@ public class FeedActivity extends AppCompatActivity {
                 }
             }
     });}
+
+
 
 }
