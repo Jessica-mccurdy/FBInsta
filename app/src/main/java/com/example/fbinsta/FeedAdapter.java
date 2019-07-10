@@ -122,7 +122,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 Intent intent = new Intent(context, DetailsActivity.class);
                 // serialize the tweet using parceler, use its short name as a key
                // intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
-                //intent.putExtra( "id" , post.getObjectID());
+                intent.putExtra( "id" , Post.KEY_ID);
                 // show the activity
                 context.startActivity(intent);
             }

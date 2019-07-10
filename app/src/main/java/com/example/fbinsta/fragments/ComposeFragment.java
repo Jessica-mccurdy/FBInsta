@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.example.fbinsta.FeedActivity;
 import com.example.fbinsta.LogInActivity;
 import com.example.fbinsta.R;
 import com.example.fbinsta.model.Post;
@@ -69,7 +68,7 @@ public class ComposeFragment extends Fragment {
         submitButton = view.findViewById(R.id.submit_bt);
         ivPostImage = view.findViewById(R.id.ivPostImage);
         logInButton = view.findViewById(R.id.logOut);
-        feedButton = view.findViewById(R.id.btFeed);
+        //feedButton = view.findViewById(R.id.btFeed);
 
 
 
@@ -95,6 +94,7 @@ public class ComposeFragment extends Fragment {
             }
         });
 
+        /*
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +104,7 @@ public class ComposeFragment extends Fragment {
 
             }
         });
+        */
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {

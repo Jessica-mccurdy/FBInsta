@@ -2,7 +2,6 @@ package com.example.fbinsta;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
                         //TODO Swap fragment here
                         // do something here
                         fragment = new PostsFragment();
-                        Toast.makeText(HomeActivity.this, "Home", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(HomeActivity.this, "Home", Toast.LENGTH_LONG).show();
                         break;
                         //return true;
                     case R.id.action_compose:

@@ -45,7 +45,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         // query post
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
-        postQuery.whereEqualTo("objectID", id);
+        postQuery.whereEqualTo("objectId", id);
         postQuery.include(Post.KEY_USER);
         postQuery.findInBackground(new FindCallback<Post>() {
                //iterate through query
