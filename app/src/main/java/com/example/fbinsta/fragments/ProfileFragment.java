@@ -18,6 +18,7 @@ public class ProfileFragment extends PostsFragment {
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
         postQuery.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
+        postQuery.addDescendingOrder(Post.KEY_CREATED_AT);
         postQuery.findInBackground(new FindCallback<Post>() {
             //iterate through query
             @Override

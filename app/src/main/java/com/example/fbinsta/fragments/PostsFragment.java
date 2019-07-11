@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.fbinsta.EndlessRecyclerViewScrollListener;
 import com.example.fbinsta.FeedAdapter;
 import com.example.fbinsta.R;
 import com.example.fbinsta.model.Post;
@@ -30,39 +31,9 @@ public class PostsFragment extends Fragment {
     protected RecyclerView rvFeed;
     protected  SwipeRefreshLayout swipeContainer;
 
+    // Store a member variable for the listener
+    private EndlessRecyclerViewScrollListener scrollListener;
 
-    /*
-    // Define the listener of the interface type
-    // listener will the activity instance containing fragment
-    private OnItemSelectedListener listener;
-
-    // Define the events that the fragment will use to communicate
-    public interface OnItemSelectedListener {
-        // This can be any number of events to be sent to the activity
-        public void onRssItemSelected(String link);
-    }
-
-    // Store the listener (activity) that will have events fired once the fragment is attached
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnItemSelectedListener) {
-            listener = (OnItemSelectedListener) context;
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement MyListFragment.OnItemSelectedListener");
-        }
-    }
-
-    // Now we can fire the event when the user selects something in the fragment
-    public void onSomeClick(View v) {
-        listener.onRssItemSelected("some link");
-    }
-
-
-
-*/
-    //
 
     @Nullable
     @Override
@@ -96,6 +67,40 @@ public class PostsFragment extends Fragment {
         //rvFeed.addItemDecoration(new DividerItemDecoration(this,
         //DividerItemDecoration.VERTICAL));
 
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+
+                //query for data older than current
+                ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
+                postQuery.include(Post.KEY_USER);
+                postQuery.setLimit(20);
+                postQuery.whereGreaterThan(Post.KEY_CREATED_AT, posts.get(page).getKeyCreatedAt());
+                postQuery.addDescendingOrder(Post.KEY_CREATED_AT);
+                postQuery.findInBackground(new FindCallback<Post>() {
+                    //iterate through query
+                    @Override
+                    public void done(List<Post> objects, ParseException e) {
+                        if (e == null){
+                            for (int i = 0; i < objects.size(); ++i){
+                                posts.add(objects.get(i));
+                                feedAdapter.notifyItemInserted(posts.size() - 1);
+
+                                // from old vid example of getting things
+                                Log.d("FeedActivity", "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
+                            }
+                        }else {
+                            Log.e("FeedActivity", "Can't get post");
+                            e.printStackTrace();
+                        }
+                    }
+                });}
+
+
+        };
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
@@ -108,6 +113,8 @@ public class PostsFragment extends Fragment {
                 feedAdapter.addAll(posts);
                 populate();
                 swipeContainer.setRefreshing(false);
+
+
             }
 
         });
@@ -123,10 +130,14 @@ public class PostsFragment extends Fragment {
 
         populate();
 
+        // Adds the scroll listener to RecyclerView
+        rvFeed.addOnScrollListener(scrollListener);
+
+
     }
 
 
-
+/*
     protected void queryPosts(){
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
@@ -148,11 +159,15 @@ public class PostsFragment extends Fragment {
             }
         });
     }
+    */
 
     protected void populate(){
         //get query
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
+        //TODO set this back to 20
+        postQuery.setLimit(5);
+        postQuery.addDescendingOrder(Post.KEY_CREATED_AT);
         postQuery.findInBackground(new FindCallback<Post>() {
             //iterate through query
             @Override
@@ -171,6 +186,8 @@ public class PostsFragment extends Fragment {
                 }
             }
         });}
+
+
 
 
 }

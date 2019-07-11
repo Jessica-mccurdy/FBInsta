@@ -83,4 +83,17 @@ public class Post extends ParseObject {
 
     }
 
+    /*
+
+    public static List<Post> createContactsList(int numPosts, int offset) {
+        List<Post> contacts = new ArrayList<Post>();
+
+        for (int i = 1; i <= numPosts; i++) {
+            contacts.add(new Contact("Person " + ++lastContactId + " offset: " + offset, i <= numContacts / 2));
+        }
+
+        return contacts;
+    }
+
+*/
 }
