@@ -24,6 +24,10 @@ import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
+    // Define the listener of the interface type
+    // listener will the activity instance containing fragment
+    //private PostsFragment.OnItemSelectedListener listener;
+
 
 
     //pass in the Tweets array in the constructor
@@ -32,6 +36,55 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         posts = tweets;
     }
     Context context;
+
+
+/*
+
+    // Step 1 - This interface defines the type of messages I want to communicate to my owner
+    public interface MyCustomObjectListener {
+        // These methods are the different events and
+        // need to pass relevant arguments related to the event triggered
+        // TODO change these
+        public void onSelected(Post post);
+    }
+
+    // Step 2 - This variable represents the listener passed in by the owning object
+    // The listener must implement the events interface and passes messages up to the parent.
+    private MyCustomObjectListener listener;
+
+    // Constructor where listener events are ignored
+    public FeedAdapter() {
+        // set null or default listener or accept as argument to constructor
+        this.listener = null;
+        onClick();
+    }
+
+    // Assign the listener implementing events interface that will receive the events
+    public void setCustomObjectListener(MyCustomObjectListener listener) {
+        this.listener = listener;
+    }
+
+    // ... setter defined here as shown earlier
+
+    public void loadDataAsync() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("https://mycustomapi.com/data/get.json", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // Networking is finished loading data, data is processed
+                SomeData data = SomeData.processData(response.get("data"));
+                // Do some other stuff as needed....
+                // Now let's trigger the event
+                if (listener != null)
+                    listener.onDataLoaded(data); // <---- fire listener here
+            }
+        });
+
+
+    }
+
+
+*/
 
     // for each row inflate the layout and cache references into ViewHolder
     @Override
@@ -78,6 +131,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 .into(holder.ivPostImage);
 
 
+
+
     }
 
     @Override
@@ -109,6 +164,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             tvCreatedAt = (TextView) itemView.findViewById((R.id.tvCreatedAt));
 
             itemView.setOnClickListener(this);
+
 
         }
 

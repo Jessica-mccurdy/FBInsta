@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.fbinsta.fragments.ComposeFragment;
 import com.example.fbinsta.fragments.PostsFragment;
+import com.example.fbinsta.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -21,12 +22,38 @@ public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+    // Can be any fragment, `DetailFragment` is just an example
+    Fragment fragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         final FragmentManager fragmentManager = getSupportFragmentManager();
+
+
+        /*
+        //added
+        // Get access to the detail view fragment by id
+        fragment = (Fragment) getSupportFragmentManager()
+                .findFragmentById(R.id.PostsFragment);
+
+
+        // ...second try
+        // Create the custom object
+        FeedAdapter object = new FeedAdapter();
+        // Step 4 - Setup the listener for this object
+        object.setCustomObjectListener(new FeedAdapter.MyCustomObjectListener() {
+                           @Override
+                           public void selected (Post post) {
+                               // Code to handle object ready
+                           }
+                        });
+*/
+
+
+
 
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -50,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                         //return true;
                     case R.id.action_profile:
                         // do something here
-                        fragment = new ComposeFragment();
+                        fragment = new ProfileFragment();
                         break;
                         //return true;
                     default:
@@ -63,8 +90,25 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         //set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_home);
 
 
-    }}
+    }
+
+    /*
+    //added
+
+    // Now we can define the action to take in the activity when the fragment event fires
+    // This is implementing the `OnItemSelectedListener` interface methods
+    @Override
+    public void onRssItemSelected(String link) {
+        if (fragment != null && fragment.isInLayout()) {
+            fragment.setText(link);
+        }
+    }
+    */
+
+}
