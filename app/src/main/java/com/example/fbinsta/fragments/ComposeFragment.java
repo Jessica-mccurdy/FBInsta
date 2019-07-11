@@ -31,6 +31,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ComposeFragment extends Fragment {
 
@@ -38,6 +39,7 @@ public class ComposeFragment extends Fragment {
     private Button takePicButton;
     private Button submitButton;
     private Button logInButton;
+    private Button selectPicButton;
     private Button feedButton;
     private ImageView ivPostImage;
     private final String TAG = "ComposeFragment";
@@ -45,6 +47,7 @@ public class ComposeFragment extends Fragment {
 
     // copied and looks wrong
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public final static int SELECT_IMAGE_REQUEST_CODE = 1111;
     public String photoFileName = "photo.jpg";
     File photoFile;
 
@@ -71,6 +74,7 @@ public class ComposeFragment extends Fragment {
         ivPostImage = view.findViewById(R.id.ivPostImage);
         logInButton = view.findViewById(R.id.logOut);
         pb = (ProgressBar) view.findViewById(R.id.pbLoading);
+        selectPicButton = view.findViewById(R.id.btSelect);
         //feedButton = view.findViewById(R.id.btFeed);
 
 
@@ -81,6 +85,13 @@ public class ComposeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 launchCamera();
+            }
+        });
+
+        selectPicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchSelect();
             }
         });
 
@@ -151,6 +162,24 @@ public class ComposeFragment extends Fragment {
         }
     }
 
+
+    public void launchSelect(){
+
+        // Create a File reference to access to future access
+        photoFile = getPhotoFileUri(photoFileName);
+
+        // Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -162,6 +191,20 @@ public class ComposeFragment extends Fragment {
                 ivPostImage.setImageBitmap(takenImage);
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if(requestCode == SELECT_IMAGE_REQUEST_CODE ){
+            if (resultCode == Activity.RESULT_OK) {
+                Uri photoUri = data.getData();
+                // Do something with the photo based on Uri
+                Bitmap selectedImage = null;
+                try {
+                    selectedImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Load the selected image into a preview
+                ivPostImage.setImageBitmap(selectedImage);
             }
         }
     }
