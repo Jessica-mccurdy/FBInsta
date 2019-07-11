@@ -2,7 +2,6 @@ package com.example.fbinsta;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,11 +13,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.fbinsta.model.Post;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 
-import java.util.List;
+import org.parceler.Parcels;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -39,10 +35,15 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         // unwrap the movie passed in via intent, using its simple name as a key
-       // post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
+       post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
 
-        // get objectID
+
+
+       /*
+       // get objectID
         id = getIntent().getStringExtra("id");
+
+
 
 
         // query post
@@ -62,7 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
                }
            });
 
-
+        */
 
 
         ivProfileImage = (ImageView) findViewById((R.id.ivProfileImage));
@@ -82,8 +83,8 @@ public class DetailsActivity extends AppCompatActivity {
                             .getUrl())
                     .apply(new RequestOptions()
                             .transforms(new CenterCrop(), new RoundedCorners(20))
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_background))
+                            .placeholder(R.drawable.ic_home)
+                            .error(R.drawable.ic_home))
                     .into(ivPostImage);
         }
         else{

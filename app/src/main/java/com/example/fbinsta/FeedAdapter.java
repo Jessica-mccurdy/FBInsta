@@ -16,6 +16,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.fbinsta.model.Post;
 
+import org.parceler.Parcels;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +53,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.tvUserName.setText(post.getUser().getUsername());
         holder.tvUserName2.setText(post.getUser().getUsername());
         holder.tvDescription.setText(post.getDescription());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        holder.tvCreatedAt.setText(sdf.format( post.getCreatedAt()));
 
         // we don't have profile pic yet
         /*
@@ -89,6 +94,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public TextView tvUserName2;
         public TextView tvDescription;
         public ImageView ivPostImage;
+        public TextView tvCreatedAt;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -100,6 +106,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             tvUserName2 = (TextView) itemView.findViewById(R.id.tvUserName2);
             tvDescription = (TextView) itemView.findViewById((R.id.tvDescription));
             ivPostImage = (ImageView) itemView.findViewById((R.id.iv_PostImage));
+            tvCreatedAt = (TextView) itemView.findViewById((R.id.tvCreatedAt));
 
             itemView.setOnClickListener(this);
 
@@ -121,8 +128,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 // create intent for the new activity
                 Intent intent = new Intent(context, DetailsActivity.class);
                 // serialize the tweet using parceler, use its short name as a key
-               // intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
-                intent.putExtra( "id" , post.getObjectId());
+                intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+                //intent.putExtra( "id" , post.getObjectId());
                 // show the activity
                 context.startActivity(intent);
             }
@@ -145,6 +152,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         posts.addAll(list);
         notifyDataSetChanged();
     }
+
 
 
 
