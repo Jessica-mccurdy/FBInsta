@@ -1,7 +1,9 @@
 package com.example.fbinsta.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -165,13 +167,17 @@ public class ComposeFragment extends Fragment {
 
     public void launchSelect(){
 
-        // Create a File reference to access to future access
-        photoFile = getPhotoFileUri(photoFileName);
+        //photoFile = getPhotoFileUri(photoFileName);
 
         // Create intent for picking a photo from the gallery
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+        // Create a File reference to access to future access
+        //photoFile = getPhotoFileUri(photoFileName);
+        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+        //Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -196,15 +202,22 @@ public class ComposeFragment extends Fragment {
         else if(requestCode == SELECT_IMAGE_REQUEST_CODE ){
             if (resultCode == Activity.RESULT_OK) {
                 Uri photoUri = data.getData();
+
+                //photoFile = new File(photoUri.getPath());
+                photoFile = new File(getRealPathFromURI(getContext(), photoUri));
+
                 // Do something with the photo based on Uri
-                Bitmap selectedImage = null;
+                //Bitmap selectedImage = null;
                 try {
-                    selectedImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+                    Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+
+                    //photoFile = new File(photoUri.getPath());
+                    ivPostImage.setImageBitmap(selectedImage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 // Load the selected image into a preview
-                ivPostImage.setImageBitmap(selectedImage);
+                // ivPostImage.setImageBitmap(selectedImage);
             }
         }
     }
@@ -227,7 +240,7 @@ public class ComposeFragment extends Fragment {
         return file;
     }
 
-    private void savePost(String description, ParseUser parseUser, File photoFile, View view){
+    private void savePost(String description, ParseUser parseUser, final File photoFile, View view){
 
         pb.setVisibility(ProgressBar.VISIBLE);
         Post post = new Post();
@@ -246,11 +259,29 @@ public class ComposeFragment extends Fragment {
                     Log.d(TAG, "Success!");
                     descriptionInput.setText("");
                     ivPostImage.setImageResource(0);
+
                     // run a background job and once complete
                     pb.setVisibility(ProgressBar.INVISIBLE);
                 }
             }
         });
+
+
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
     }
 
