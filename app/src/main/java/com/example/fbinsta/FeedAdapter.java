@@ -143,7 +143,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
 
     // create ViewHolder Class
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUserName;
         public TextView tvUserName2;
@@ -163,36 +163,26 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             ivPostImage = (ImageView) itemView.findViewById((R.id.iv_PostImage));
             tvCreatedAt = (TextView) itemView.findViewById((R.id.tvCreatedAt));
 
-            itemView.setOnClickListener(this);
-
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // gets item position
+                    int position = getAdapterPosition();
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // get the movie at the position, this won't work if the class is static
+                        Post post = posts.get(position);
+                        // create intent for the new activity
+                        Intent intent = new Intent(context, DetailsActivity.class);
+                        // serialize the tweet using parceler, use its short name as a key
+                        intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+                        //intent.putExtra( "id" , post.getObjectId());
+                        // show the activity
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
-
-        // on click listener for later
-
-
-        @Override
-        public void onClick(View v) {
-
-
-            // gets item position
-            int position = getAdapterPosition();
-            // make sure the position is valid, i.e. actually exists in the view
-            if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position, this won't work if the class is static
-                Post post = posts.get(position);
-                // create intent for the new activity
-                Intent intent = new Intent(context, DetailsActivity.class);
-                // serialize the tweet using parceler, use its short name as a key
-                intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
-                //intent.putExtra( "id" , post.getObjectId());
-                // show the activity
-                context.startActivity(intent);
-            }
-
-
-        }
-
 
     }
 

@@ -1,6 +1,5 @@
 package com.example.fbinsta;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +15,8 @@ import com.example.fbinsta.model.Post;
 
 import org.parceler.Parcels;
 
+import java.text.SimpleDateFormat;
+
 public class DetailsActivity extends AppCompatActivity {
 
     Post post;
@@ -26,9 +27,6 @@ public class DetailsActivity extends AppCompatActivity {
     public TextView tvTimeStamp;
     public TextView tvDescription;
     public ImageView ivPostImage;
-
-    Context context;
-
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +72,12 @@ public class DetailsActivity extends AppCompatActivity {
 
         if(post != null){
             tvUserName.setText(post.getUser().getUsername());
-            tvTimeStamp.setText(post.getUser().getUsername());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            tvTimeStamp.setText(sdf.format( post.getCreatedAt()));
             tvDescription.setText(post.getDescription());
 
             // Handles images
-            Glide.with(context)
+            Glide.with(this)
                     .load(post.getImage()
                             .getUrl())
                     .apply(new RequestOptions()
