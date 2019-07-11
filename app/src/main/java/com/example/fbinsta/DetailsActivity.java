@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,6 +44,7 @@ public class DetailsActivity extends AppCompatActivity {
         // get objectID
         id = getIntent().getStringExtra("id");
 
+
         // query post
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.whereEqualTo("objectId", id);
@@ -69,19 +71,25 @@ public class DetailsActivity extends AppCompatActivity {
         tvDescription = (TextView) findViewById((R.id.tvDescription));
         ivPostImage = (ImageView) findViewById((R.id.ivPostImage));
 
-        tvUserName.setText(post.getUser().getUsername());
-        tvTimeStamp.setText(post.getUser().getUsername());
-        tvDescription.setText(post.getDescription());
+        if(post != null){
+            tvUserName.setText(post.getUser().getUsername());
+            tvTimeStamp.setText(post.getUser().getUsername());
+            tvDescription.setText(post.getDescription());
 
-        // Handles images
-        Glide.with(context)
-                .load(post.getImage()
-                        .getUrl())
-                .apply(new RequestOptions()
-                        .transforms(new CenterCrop(), new RoundedCorners(20))
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_background))
-                .into(ivPostImage);
+            // Handles images
+            Glide.with(context)
+                    .load(post.getImage()
+                            .getUrl())
+                    .apply(new RequestOptions()
+                            .transforms(new CenterCrop(), new RoundedCorners(20))
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_background))
+                    .into(ivPostImage);
+        }
+        else{
+            Toast.makeText(DetailsActivity.this, "woops", Toast.LENGTH_LONG).show();
+        }
+
 
 
 
