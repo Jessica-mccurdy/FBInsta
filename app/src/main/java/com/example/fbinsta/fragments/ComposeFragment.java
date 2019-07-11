@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -40,6 +41,7 @@ public class ComposeFragment extends Fragment {
     private Button feedButton;
     private ImageView ivPostImage;
     private final String TAG = "ComposeFragment";
+    private ProgressBar pb;
 
     // copied and looks wrong
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -68,6 +70,7 @@ public class ComposeFragment extends Fragment {
         submitButton = view.findViewById(R.id.submit_bt);
         ivPostImage = view.findViewById(R.id.ivPostImage);
         logInButton = view.findViewById(R.id.logOut);
+        pb = (ProgressBar) view.findViewById(R.id.pbLoading);
         //feedButton = view.findViewById(R.id.btFeed);
 
 
@@ -117,7 +120,8 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "There is no photo!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                savePost(description, user, photoFile);
+                savePost(description, user, photoFile, view);
+
             }
 
             //queryPosts();
@@ -180,7 +184,9 @@ public class ComposeFragment extends Fragment {
         return file;
     }
 
-    private void savePost(String description, ParseUser parseUser, File photoFile){
+    private void savePost(String description, ParseUser parseUser, File photoFile, View view){
+
+        pb.setVisibility(ProgressBar.VISIBLE);
         Post post = new Post();
         post.setDescription(description);
         post.setUser(parseUser);
@@ -191,11 +197,14 @@ public class ComposeFragment extends Fragment {
                 if (e != null){
                     Log.d(TAG, "Error while saving");
                     e.printStackTrace();
+                    pb.setVisibility(ProgressBar.INVISIBLE);
                     return;
                 } else{
                     Log.d(TAG, "Success!");
                     descriptionInput.setText("");
                     ivPostImage.setImageResource(0);
+                    // run a background job and once complete
+                    pb.setVisibility(ProgressBar.INVISIBLE);
                 }
             }
         });

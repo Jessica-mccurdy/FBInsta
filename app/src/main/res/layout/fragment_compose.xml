@@ -39,9 +39,11 @@
         android:layout_marginTop="78dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
+        android:layout_marginBottom="45dp"
         android:ems="10"
         android:hint="enter a description"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/takePic_bt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +69,16 @@
         android:layout_height="wrap_content"
         android:text="Log Out"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/submit_bt"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
