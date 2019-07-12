@@ -1,6 +1,7 @@
 package com.example.fbinsta.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -53,6 +54,8 @@ public class ComposeFragment extends Fragment {
     public String photoFileName = "photo.jpg";
     File photoFile;
 
+
+
     // The onCreateView method is called when Fragment should create its View object hierarchy,
     // either dynamically or via XML layout inflation.
     @Nullable
@@ -70,7 +73,7 @@ public class ComposeFragment extends Fragment {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
         super.onViewCreated(view, savedInstanceState);
-        descriptionInput = view.findViewById(R.id.description_et);
+        descriptionInput = view.findViewById(R.id.tvTitle);
         takePicButton = view.findViewById(R.id.takePic_bt);
         submitButton = view.findViewById(R.id.submit_bt);
         ivPostImage = view.findViewById(R.id.ivPostImage);
@@ -78,6 +81,7 @@ public class ComposeFragment extends Fragment {
         pb = (ProgressBar) view.findViewById(R.id.pbLoading);
         selectPicButton = view.findViewById(R.id.btSelect);
         //feedButton = view.findViewById(R.id.btFeed);
+
 
 
 
@@ -137,7 +141,7 @@ public class ComposeFragment extends Fragment {
 
             }
 
-            //queryPosts();
+
 
 
         });
@@ -174,10 +178,9 @@ public class ComposeFragment extends Fragment {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Create a File reference to access to future access
-        //photoFile = getPhotoFileUri(photoFileName);
+
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        //Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
-        //intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -241,8 +244,13 @@ public class ComposeFragment extends Fragment {
     }
 
     private void savePost(String description, ParseUser parseUser, final File photoFile, View view){
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setTitle("Loading...");
+        pd.setMessage("Please wait.");
+        pd.setCancelable(false);
 
-        pb.setVisibility(ProgressBar.VISIBLE);
+        //pb.setVisibility(ProgressBar.VISIBLE);
+        pd.show();
         Post post = new Post();
         post.setDescription(description);
         post.setUser(parseUser);
@@ -253,7 +261,8 @@ public class ComposeFragment extends Fragment {
                 if (e != null){
                     Log.d(TAG, "Error while saving");
                     e.printStackTrace();
-                    pb.setVisibility(ProgressBar.INVISIBLE);
+                    pd.dismiss();
+                    //pb.setVisibility(ProgressBar.INVISIBLE);
                     return;
                 } else{
                     Log.d(TAG, "Success!");
@@ -261,7 +270,8 @@ public class ComposeFragment extends Fragment {
                     ivPostImage.setImageResource(0);
 
                     // run a background job and once complete
-                    pb.setVisibility(ProgressBar.INVISIBLE);
+                    pd.dismiss();
+                    //pb.setVisibility(ProgressBar.INVISIBLE);
                 }
             }
         });
