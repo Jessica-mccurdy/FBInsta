@@ -34,6 +34,10 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme"></activity>
         <activity
+            android:name=".ChangePicActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".FeedActivity"
             android:label="@string/title_activity_feed"
             android:theme="@style/AppTheme"></activity>
