@@ -62,8 +62,9 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 
 Describe any challenges encountered while building the app.
 
-There were problems with user permissions for accessing the gallery
-The dependencies in resources were out of date
+* There were problems with user permissions for accessing the gallery
+
+ * The dependencies in resources were out of date
 
 
 ## License
