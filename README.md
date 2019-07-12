@@ -2,7 +2,7 @@
 
 FBInsta is a photo sharing app using Parse as its backend.
 
-Time spent: **X** hours spent in total
+Time spent: **25** hours spent in total
 
 ## User Stories
 
@@ -40,8 +40,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. It would be neat to give an option to login/sign up via Facebook 
+2. I had some repetition of code - how can I reduce the amount of duplicated code?
 
 ## Video Walkthrough
 
@@ -61,6 +61,11 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+* There were problems with user permissions for accessing the gallery
+
+ * The dependencies in resources were out of date
+
 
 ## License
 
