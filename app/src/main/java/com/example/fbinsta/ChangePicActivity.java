@@ -1,7 +1,6 @@
-package com.example.fbinsta.fragments;
+package com.example.fbinsta;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,35 +11,33 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import com.example.fbinsta.R;
-import com.example.fbinsta.model.Post;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.IOException;
 
-public class ComposeFragment extends Fragment {
+public class ChangePicActivity extends AppCompatActivity {
 
-    private EditText descriptionInput;
     private Button takePicButton;
     private Button submitButton;
-    //private Button logOutButton;
+    private Button logInButton;
     private Button selectPicButton;
     private Button feedButton;
     private ImageView ivPostImage;
@@ -55,32 +52,26 @@ public class ComposeFragment extends Fragment {
 
 
 
-    // The onCreateView method is called when Fragment should create its View object hierarchy,
-    // either dynamically or via XML layout inflation.
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        // Defines the xml file for the fragment
-        return inflater.inflate(R.layout.fragment_compose, parent, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_change_pic);
+        final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
-    @Nullable
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+        ActionBar actionBar = getSupportActionBar(); // or getActionBar();
+        getSupportActionBar().setTitle("Instagram"); // set the top title
+
+
+
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
-        super.onViewCreated(view, savedInstanceState);
-        descriptionInput = view.findViewById(R.id.tvTitle);
-        takePicButton = view.findViewById(R.id.takePic_bt);
-        submitButton = view.findViewById(R.id.submit_bt);
-        ivPostImage = view.findViewById(R.id.ivPostImage);
-        //logOutButton = view.findViewById(R.id.logOut);
-        pb = (ProgressBar) view.findViewById(R.id.pbLoading);
-        selectPicButton = view.findViewById(R.id.btSelect);
+        takePicButton = findViewById(R.id.takePic_bt);
+        submitButton = findViewById(R.id.submit_bt);
+        ivPostImage = findViewById(R.id.ivPostImage);
+        logInButton = findViewById(R.id.logOut);
+        pb = (ProgressBar) findViewById(R.id.pbLoading);
+        selectPicButton = findViewById(R.id.btSelect);
         //feedButton = view.findViewById(R.id.btFeed);
-
 
 
 
@@ -100,20 +91,18 @@ public class ComposeFragment extends Fragment {
             }
         });
 
-/*
-        logOutButton.setOnClickListener(new View.OnClickListener() {
+
+        logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ParseUser.logOut();
                 ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-                final Intent intent = new Intent(getContext(), LogInActivity.class);
+                final Intent intent = new Intent(ChangePicActivity.this, LogInActivity.class);
                 startActivity(intent);
-                getActivity().finish();
+                finish();
 
             }
         });
-
-        */
 
         /*
         feedButton.setOnClickListener(new View.OnClickListener() {
@@ -131,14 +120,13 @@ public class ComposeFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String description = descriptionInput.getText().toString();
                 ParseUser user = ParseUser.getCurrentUser();
                 if (photoFile == null || ivPostImage.getDrawable() == null){
                     Log.e(TAG, "No photo to submit");
-                    Toast.makeText(getContext(), "There is no photo!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePicActivity.this, "There is no photo!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                savePost(description, user, photoFile, view);
+                savePost(user, photoFile, view);
 
             }
 
@@ -158,12 +146,12 @@ public class ComposeFragment extends Fragment {
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
+        Uri fileProvider = FileProvider.getUriForFile(ChangePicActivity.this, "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+        if (intent.resolveActivity(ChangePicActivity.this.getPackageManager()) != null) {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
@@ -184,7 +172,7 @@ public class ComposeFragment extends Fragment {
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (intent.resolveActivity(getPackageManager()) != null) {
             // Bring up gallery to select a photo
             startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
         }
@@ -200,7 +188,7 @@ public class ComposeFragment extends Fragment {
                 // Load the taken image into a preview
                 ivPostImage.setImageBitmap(takenImage);
             } else { // Result was a failure
-                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChangePicActivity.this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
         else if(requestCode == SELECT_IMAGE_REQUEST_CODE ){
@@ -208,12 +196,12 @@ public class ComposeFragment extends Fragment {
                 Uri photoUri = data.getData();
 
                 //photoFile = new File(photoUri.getPath());
-                photoFile = new File(getRealPathFromURI(getContext(), photoUri));
+                photoFile = new File(getRealPathFromURI(ChangePicActivity.this, photoUri));
 
                 // Do something with the photo based on Uri
                 //Bitmap selectedImage = null;
                 try {
-                    Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+                    Bitmap selectedImage = MediaStore.Images.Media.getBitmap(ChangePicActivity.this.getContentResolver(), photoUri);
 
                     //photoFile = new File(photoUri.getPath());
                     ivPostImage.setImageBitmap(selectedImage);
@@ -231,7 +219,7 @@ public class ComposeFragment extends Fragment {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+        File mediaStorageDir = new File(ChangePicActivity.this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
@@ -244,57 +232,63 @@ public class ComposeFragment extends Fragment {
         return file;
     }
 
-    private void savePost(String description, ParseUser parseUser, final File photoFile, View view){
-        final ProgressDialog pd = new ProgressDialog(getContext());
-        pd.setTitle("Loading...");
-        pd.setMessage("Please wait.");
-        pd.setCancelable(false);
+    private void savePost( ParseUser parseUser, final File photoFile, View view) {
 
-        //pb.setVisibility(ProgressBar.VISIBLE);
-        pd.show();
+        pb.setVisibility(ProgressBar.VISIBLE);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+
+
+        // Retrieve the object by id
+        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject user, ParseException e) {
+                        if (e == null) {
+                            user.put("profileImage", new ParseFile(photoFile));
+                            user.saveInBackground(new SaveCallback() {
+                                                      @Override
+                                                      public void done(ParseException e) {
+                                                          if (e != null){
+                                                              e.printStackTrace();
+                                                              pb.setVisibility(ProgressBar.INVISIBLE);
+                                                              return;
+                                                          }else{
+                                                              // run a background job and once complete
+                                                              ivPostImage.setImageResource(0);
+                                                              pb.setVisibility(ProgressBar.INVISIBLE);
+                                                          }}}
+                                                              );
+
+
+                        }
+
+
+        /*
         Post post = new Post();
         post.setDescription(description);
         post.setUser(parseUser);
         post.setImage(new ParseFile(photoFile));
-        post.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null){
-                    Log.d(TAG, "Error while saving");
-                    e.printStackTrace();
-                    pd.dismiss();
-                    //pb.setVisibility(ProgressBar.INVISIBLE);
-                    return;
-                } else{
-                    Log.d(TAG, "Success!");
-                    descriptionInput.setText("");
-                    ivPostImage.setImageResource(0);
+        */
 
-                    // run a background job and once complete
-                    pd.dismiss();
-                    //pb.setVisibility(ProgressBar.INVISIBLE);
+
+                    }
                 }
-            }
-        });
-
-
+        );
     }
 
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-    }
+
+            public String getRealPathFromURI(Context context, Uri contentUri) {
+                Cursor cursor = null;
+                try {
+                    String[] proj = {MediaStore.Images.Media.DATA};
+                    cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cursor.moveToFirst();
+                    return cursor.getString(column_index);
+                } finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                }}}
 
 
 

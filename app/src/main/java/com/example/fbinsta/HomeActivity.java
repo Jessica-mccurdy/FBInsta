@@ -1,6 +1,8 @@
 package com.example.fbinsta;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,20 @@ public class HomeActivity extends AppCompatActivity {
     // Can be any fragment, `DetailFragment` is just an example
     Fragment fragment;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    public void onChangeProfile(MenuItem mi) {
+        // handle click here
+        Intent intent = new Intent(HomeActivity.this, ChangePicActivity.class);
+        // show the activity
+        HomeActivity.this.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,27 +50,8 @@ public class HomeActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
-        getSupportActionBar().setTitle(" "); // set the top title
+        getSupportActionBar().setTitle("Instagram"); // set the top title
 
-
-        /*
-        //added
-        // Get access to the detail view fragment by id
-        fragment = (Fragment) getSupportFragmentManager()
-                .findFragmentById(R.id.PostsFragment);
-
-
-        // ...second try
-        // Create the custom object
-        FeedAdapter object = new FeedAdapter();
-        // Step 4 - Setup the listener for this object
-        object.setCustomObjectListener(new FeedAdapter.MyCustomObjectListener() {
-                           @Override
-                           public void selected (Post post) {
-                               // Code to handle object ready
-                           }
-                        });
-*/
 
 
 

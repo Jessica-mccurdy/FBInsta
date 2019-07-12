@@ -12,6 +12,8 @@ import java.util.List;
 
 public class ProfileFragment extends PostsFragment {
 
+
+
     @Override
     protected void populate(){
         //get query

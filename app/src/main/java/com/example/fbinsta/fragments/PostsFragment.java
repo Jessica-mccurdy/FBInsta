@@ -32,7 +32,7 @@ public class PostsFragment extends Fragment {
     protected  SwipeRefreshLayout swipeContainer;
 
     // Store a member variable for the listener
-    private EndlessRecyclerViewScrollListener scrollListener;
+    protected EndlessRecyclerViewScrollListener scrollListener;
 
 
     @Nullable
@@ -85,7 +85,10 @@ public class PostsFragment extends Fragment {
                     @Override
                     public void done(List<Post> objects, ParseException e) {
                         if (e == null){
-                            for (int i = 0; i < objects.size(); ++i){
+                            int start = posts.size();
+                            int end = start + 20;
+                            for (int i = start + 1; i < end; ++i){
+                                //add items one by one
                                 posts.add(objects.get(i));
                                 feedAdapter.notifyItemInserted(posts.size() - 1);
 
@@ -136,30 +139,6 @@ public class PostsFragment extends Fragment {
 
     }
 
-
-/*
-    protected void queryPosts(){
-        ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
-        postQuery.include(Post.KEY_USER);
-        postQuery.setLimit(20);
-        postQuery.addDescendingOrder(Post.KEY_CREATED_AT);
-        postQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if (e == null){
-                    for (int i = 0; i < objects.size(); ++i){
-                        // from old vid
-                        Log.d("FeedActivity", "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
-
-                    }
-                }else {
-                    Log.e("FeedActivity", "Can't get post");
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-    */
 
     protected void populate(){
         //get query

@@ -46,35 +46,6 @@ public class DetailsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // unwrap the post passed in via intent, using its simple name as a key
-       // post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
-
-
-       /*
-       // get objectID
-        id = getIntent().getStringExtra("id");
-
-
-
-
-        // query post
-        ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
-        postQuery.whereEqualTo("objectId", id);
-        postQuery.include(Post.KEY_USER);
-        postQuery.findInBackground(new FindCallback<Post>() {
-               //iterate through query
-               @Override
-               public void done(List<Post> objects, ParseException e) {
-                   if (e == null && objects.size() == 1) {
-                       post = objects.get(0);
-                   } else {
-                       Log.e("DetailsActivity", "Can't get post");
-                       e.printStackTrace();
-                   }
-               }
-           });
-
-        */
 
 
         ivProfileImage = (ImageView) view.findViewById((R.id.ivProfileImage));
@@ -89,7 +60,7 @@ public class DetailsFragment extends Fragment {
             tvDescription.setText(post.getDescription());
 
             // Handles images
-            Glide.with(context)
+           Glide.with(context)
                     .load(post.getImage()
                             .getUrl())
                     .apply(new RequestOptions()
