@@ -85,6 +85,15 @@ public class DetailsActivity extends AppCompatActivity {
                             .placeholder(R.drawable.ic_home)
                             .error(R.drawable.ic_home))
                     .into(ivPostImage);
+
+            // Handles images
+            Glide.with(this)
+                    .load(post.getUser().getParseFile("profileImage").getUrl())
+                    .apply(new RequestOptions()
+                            .transforms(new CenterCrop(), new RoundedCorners(20))
+                            .placeholder(R.drawable.ic_home)
+                            .error(R.drawable.ic_home))
+                    .into(ivProfileImage);
         }
         else{
             Toast.makeText(DetailsActivity.this, "woops", Toast.LENGTH_LONG).show();

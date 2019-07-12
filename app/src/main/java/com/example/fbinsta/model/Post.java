@@ -28,17 +28,21 @@ public class Post extends ParseObject {
         return getParseFile(KEY_IMAGE);
     }
 
+    /*
     public ParseFile getProfileImage() {
         return getParseFile(KEY_PROFILE_IMAGE);
     }
+    */
 
     public void setImage(ParseFile image){
         put(KEY_IMAGE, image);
     }
 
+    /*
     public void setProfileImage(ParseFile image){
         put(KEY_PROFILE_IMAGE, image);
     }
+    */
 
     public ParseUser getUser() {
         return getParseUser(KEY_USER);
@@ -83,17 +87,4 @@ public class Post extends ParseObject {
 
     }
 
-    /*
-
-    public static List<Post> createContactsList(int numPosts, int offset) {
-        List<Post> contacts = new ArrayList<Post>();
-
-        for (int i = 1; i <= numPosts; i++) {
-            contacts.add(new Contact("Person " + ++lastContactId + " offset: " + offset, i <= numContacts / 2));
-        }
-
-        return contacts;
-    }
-
-*/
 }

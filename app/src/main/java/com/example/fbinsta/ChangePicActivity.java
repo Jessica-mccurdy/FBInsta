@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -51,7 +50,6 @@ public class ChangePicActivity extends AppCompatActivity {
     File photoFile;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +58,6 @@ public class ChangePicActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
         getSupportActionBar().setTitle("Instagram"); // set the top title
-
 
 
         // Setup any handles to view objects here
@@ -72,7 +69,6 @@ public class ChangePicActivity extends AppCompatActivity {
         pb = (ProgressBar) findViewById(R.id.pbLoading);
         selectPicButton = findViewById(R.id.btSelect);
         //feedButton = view.findViewById(R.id.btFeed);
-
 
 
         // queryPosts();
@@ -121,7 +117,7 @@ public class ChangePicActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ParseUser user = ParseUser.getCurrentUser();
-                if (photoFile == null || ivPostImage.getDrawable() == null){
+                if (photoFile == null || ivPostImage.getDrawable() == null) {
                     Log.e(TAG, "No photo to submit");
                     Toast.makeText(ChangePicActivity.this, "There is no photo!", Toast.LENGTH_SHORT).show();
                     return;
@@ -129,8 +125,6 @@ public class ChangePicActivity extends AppCompatActivity {
                 savePost(user, photoFile, view);
 
             }
-
-
 
 
         });
@@ -158,7 +152,7 @@ public class ChangePicActivity extends AppCompatActivity {
     }
 
 
-    public void launchSelect(){
+    public void launchSelect() {
 
         //photoFile = getPhotoFileUri(photoFileName);
 
@@ -190,8 +184,7 @@ public class ChangePicActivity extends AppCompatActivity {
             } else { // Result was a failure
                 Toast.makeText(ChangePicActivity.this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
-        }
-        else if(requestCode == SELECT_IMAGE_REQUEST_CODE ){
+        } else if (requestCode == SELECT_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri photoUri = data.getData();
 
@@ -222,7 +215,7 @@ public class ChangePicActivity extends AppCompatActivity {
         File mediaStorageDir = new File(ChangePicActivity.this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
         // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
             Log.d(TAG, "failed to create directory");
         }
 
@@ -232,48 +225,36 @@ public class ChangePicActivity extends AppCompatActivity {
         return file;
     }
 
-    private void savePost( ParseUser parseUser, final File photoFile, View view) {
+    private void savePost(ParseUser parseUser, final File photoFile, View view) {
 
         pb.setVisibility(ProgressBar.VISIBLE);
+
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
 
 
         // Retrieve the object by id
-        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
-                    public void done(ParseObject user, ParseException e) {
-                        if (e == null) {
-                            user.put("profileImage", new ParseFile(photoFile));
-                            user.saveInBackground(new SaveCallback() {
-                                                      @Override
-                                                      public void done(ParseException e) {
-                                                          if (e != null){
-                                                              e.printStackTrace();
-                                                              pb.setVisibility(ProgressBar.INVISIBLE);
-                                                              return;
-                                                          }else{
-                                                              // run a background job and once complete
-                                                              ivPostImage.setImageResource(0);
-                                                              pb.setVisibility(ProgressBar.INVISIBLE);
-                                                          }}}
-                                                              );
-
-
-                        }
-
-
-        /*
-        Post post = new Post();
-        post.setDescription(description);
-        post.setUser(parseUser);
-        post.setImage(new ParseFile(photoFile));
-        */
-
-
-                    }
-                }
+        ParseUser.getCurrentUser().put("profileImage", new ParseFile(photoFile));
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                                        @Override
+                                                        public void done(ParseException e) {
+                                                            if (e != null) {
+                                                                e.printStackTrace();
+                                                                pb.setVisibility(ProgressBar.INVISIBLE);
+                                                                return;
+                                                            } else {
+                                                                // run a background job and once complete
+                                                                ivPostImage.setImageResource(0);
+                                                                pb.setVisibility(ProgressBar.INVISIBLE);
+                                                            }
+                                                        }
+                                                    }
         );
+
+
     }
+
+
 
 
             public String getRealPathFromURI(Context context, Uri contentUri) {

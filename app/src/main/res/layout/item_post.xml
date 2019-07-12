@@ -38,14 +38,11 @@
         android:id="@+id/tvDescription"
         android:layout_width="238dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="99dp"
-        android:layout_marginRight="99dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="16dp"
         android:autoLink="all"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvUserName2"
         app:layout_constraintTop_toBottomOf="@+id/iv_PostImage" />
 
@@ -55,11 +52,10 @@
         android:layout_height="33dp"
         android:layout_marginStart="9dp"
         android:layout_marginLeft="9dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/tvDescription"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#0000ff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_PostImage" />
 

@@ -67,6 +67,7 @@ public class PostsFragment extends Fragment {
         //rvFeed.addItemDecoration(new DividerItemDecoration(this,
         //DividerItemDecoration.VERTICAL));
 
+
         // Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override

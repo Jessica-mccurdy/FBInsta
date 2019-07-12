@@ -62,15 +62,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         holder.tvCreatedAt.setText(sdf.format( post.getCreatedAt()));
 
+
+
+
         // we don't have profile pic yet
-        /*
+
         // Handles images
         Glide.with(context)
-                .load(tweet.user.profileImageUrl)
+                .load(post.getUser().getParseFile("profileImage").getUrl())
                 .apply(new RequestOptions()
                         .transforms(new CenterCrop(), new RoundedCorners(20)))
                 .into(holder.ivProfileImage);
-                */
+
 
 
 

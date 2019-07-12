@@ -40,7 +40,7 @@ public class ComposeFragment extends Fragment {
     private EditText descriptionInput;
     private Button takePicButton;
     private Button submitButton;
-    //private Button logOutButton;
+    private Button logOutButton;
     private Button selectPicButton;
     private Button feedButton;
     private ImageView ivPostImage;
@@ -76,7 +76,7 @@ public class ComposeFragment extends Fragment {
         takePicButton = view.findViewById(R.id.takePic_bt);
         submitButton = view.findViewById(R.id.submit_bt);
         ivPostImage = view.findViewById(R.id.ivPostImage);
-        //logOutButton = view.findViewById(R.id.logOut);
+        logOutButton = view.findViewById(R.id.logOut);
         pb = (ProgressBar) view.findViewById(R.id.pbLoading);
         selectPicButton = view.findViewById(R.id.btSelect);
         //feedButton = view.findViewById(R.id.btFeed);
@@ -99,8 +99,8 @@ public class ComposeFragment extends Fragment {
                 launchSelect();
             }
         });
-
 /*
+
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,8 +113,7 @@ public class ComposeFragment extends Fragment {
             }
         });
 
-        */
-
+*/
         /*
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
